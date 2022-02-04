@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo List</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+</head>
+${#locale.language}=<span th:text="${#locale.language}"></span>
+
+<body>
+    <div th:replace="fragments :: msg_area"></div>
+    <form th:action="@{/}" method="post" th:object="${todoQuery}">
+        <div style="display: flex">
+            <table border="1">
+                <tr>
+                    <th th:text="#{label.title}"></th>
+                    <th th:text="#{label.importance}"></th>
+                    <th th:text="#{label.urgency}"></th>
+                    <th th:text="#{label.deadline}"></th>
+                    <th th:text="#{label.check}"></th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" size="40" name="title" th:value="*{title}">
+                    </td>
+                    <td>
+                        <select name="importance">
+                            <option value="-1" th:field="*{importance}">-</option>
+                            <option value="1" th:field="*{importance}" th:text="#{option.high}"></option>
+                            <option value="0" th:field="*{importance}" th:text="#{option.low}"></option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="urgency">
+                            <option value="-1" th:field="*{urgency}">-</option>
+                            <option value="1" th:field="*{urgency}" th:text="#{option.high}"></option>
+                            <option value="0" th:field="*{urgency}" th:text="#{option.low}"></option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" name="deadlineFrom" th:value="*{deadlineFrom}" size="10"
+                            placeholder="yyyy-mm-dd">～
+                        <input type="text" name="deadlineTo" th:value="*{deadlineTo}" size="10"
+                            placeholder="yyyy-mm-dd">
+                    </td>
+                    <td>
+                        <input type="checkbox" th:field="*{done}" value="Y" th:text="#{text.done}">
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" th:formaction="@{/todo/query}" th:text="#{button.query}"></button>
+        </div>
+        <div th:if="${#fields.hasErrors('deadlineFrom')}" th:errors="*{deadlineFrom}" th:errorclass="red"></div>
+        <div th:if="${#fields.hasErrors('deadlineTo')}" th:errors="*{deadlineTo}" th:errorclass="red"></div>
+        <hr>
+        <!-- 新規追加ボタン -->
+        <button type="submit" th:formaction="@{/todo/create/form}" th:text="#{button.new}"></button>
+            <!-- PDF出力リンク -->
+    <a th:href="@{/todo/pdf}" th:text="#{link.PDF}" target="_blank" rel="noopener noreferrer"></a>
+    </form>
+    <table border="1">
+        <tr>
+            <th>id</th>
+            <th th:text="#{label.title}"></th>
+            <th th:text="#{label.importance}"></th>
+            <th th:text="#{label.urgency}"></th>
+            <th th:text="#{label.task}"></th>
+            <th th:text="#{label.deadline}"></th>
+            <th th:text="#{label.check}"></th>
+        </tr>
+        <tr th:each="todo : ${todoList}">
+            <td th:text="${todo.id}"></td>
+            <td><a th:href="@{/todo/__${todo.id}__}" th:text="${todo.title}"></a></td>
+            <td th:text="${todo.importance == 1 ? '★★★':'★'}"></td>
+            <td th:text="${todo.urgency == 1 ? '★★★':'★'}"></td>
+            <td th:text="${#lists.size(todo.taskList)}" style="text-align: center"></td>
+            <td th:text="${todo.deadline}"></td>
+            <td th:text="${todo.done == 'Y' ? '__#{text.done}__':''}"></td>
+        </tr>
+    </table>
+    <div th:if="${todoList != null && #lists.size(todoList) != 0}" th:object="${todoList}">
+        <span th:text="#{text.paging(*{getNumber+1},*{getTotalPages})}"></span>
+        <ul id="nav">
+            <li>
+                <span th:if="*{isFirst}" th:text="#{link.prev}"></span>
+                <a th:unless="*{isFirst}" th:href="@{/todo/query(page = *{getNumber - 1})}" th:text="#{link.prev}"></a>
+            <li th:each="i : *{#numbers.sequence(getNumber-2 > 0 ? getNumber-2 : 0,
+                    getNumber+2 > getTotalPages-1 ? getTotalPages-1 : getNumber+2)}">
+                <span th:if="${i} == *{getNumber}" th:text="${i +1}"></span>
+                <a th:if="${i} != *{getNumber}" th:href="@{/todo/query(page = ${i})}" th:text="${i+1}"></a>
+            </li>
+            <span th:if="*{isLast}" th:text="#{link.next}"></span>
+            <a th:unless="*{isLast}" th:href="@{/todo/query(page = *{getNumber + 1})}" th:text="#{link.next}"></a>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>

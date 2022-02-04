@@ -1,0 +1,81 @@
+@charset "UTF-8";
+
+body {
+	margin: 20px;
+	font-size: 14px;
+}
+
+table {
+	border: solid 1px #84b2e0;
+	border-collapse: collapse;
+}
+
+th {
+	text-align: center;
+	color: white;
+	background: linear-gradient(#829ebc, #225588);
+	box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.3) inset;
+	padding: 4px 10px;
+}
+
+td {
+	padding: 4px 10px;
+	border: solid 1px #84b2e0
+}
+
+button {
+	width: 90px;
+	margin: 10px 4px;
+	padding: 4px;
+}
+
+.red {
+	color: red;
+}
+
+#nav {
+	list-style: none;
+	display: flex;
+	padding: 0px;
+}
+
+#nav li {
+	margin-right: 10px;
+}
+
+.va {
+	vertical-align: middle;
+}
+
+/* information message */
+.info_msg {
+	margin-bottom: 0.75em; /*下余白*/
+	padding: 0.75em 1em; /*文字余白*/
+	width: 50%; /*幅*/
+	color: blue; /*文字色*/
+	background-color: #dfefff; /*背景色*/
+	border: 1px solid #379bff; /*線の太さ・色*/
+	border-radius: 8px; /*角の丸み*/
+}
+
+/* warning message */
+.warn_msg {
+	margin-bottom: 0.75em; /*下余白*/
+	padding: 0.75em 1em; /*文字余白*/
+	width: 50%; /*幅*/
+	color: #bd3e00; /*文字色*/
+	background-color: #ffffc6; /*背景色*/
+	border: 1px solid #ff8040; /*線の太さ・色*/
+	border-radius: 8px; /*角の丸み*/
+}
+
+/* error message */
+.err_msg {
+	margin-bottom: 0.75em; /*下余白*/
+	padding: 0.75em 1em; /*文字余白*/
+	width: 50%; /*幅*/
+	color: red; /*文字色*/
+	background-color: #ffe6e6; /*背景色*/
+	border: 1px solid #ff8080; /*線の太さ・色*/
+	border-radius: 8px; /*角の丸み*/
+}
